@@ -1,0 +1,10 @@
+pytap2
+pubsub
+meshtastic
+cryptography
+deterministic-rsa-keygen
+python-dotenv
+textual
+textual-dev
+
+
