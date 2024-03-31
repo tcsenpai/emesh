@@ -35,8 +35,9 @@ def onReceive(packet, interface):
         decoded = packet["decoded"]
         decoded["from"] = packet["from"]
         decoded["to"] = packet["to"]
-    except:
+    except Exception as e:
         print("[ERROR] Could not decode packet: discarding it")
+        print("[ERROR] " + str(e))
         return
         # ANCHOR We have received a packet and we decoded it
     print(decoded)

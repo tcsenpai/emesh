@@ -1,4 +1,5 @@
-import emesh
+import libs.emesh as emesh
+import builtins as __builtin__
 import time
 import os
 from dotenv import load_dotenv
@@ -15,29 +16,32 @@ forceQuit = False
 
 beaconCooldown = 0
 
-import builtins as __builtin__
+
 # Overriding print for the GUI
 def print(*args, **kwargs):
     global outputs
     outputs = "".join(map(str, args))
     __builtin__.print(*args, **kwargs)
 
+
 # INFO Initializing the emesh structure
 def init():
     print("[SYSTEM] Starting EMesh...")
     vars = preparse()
-    emesh.connect(vars['port'])
+    emesh.connect(vars["port"])
     print("[LOADER] Initialized")
+
 
 # INFO Parsing our environment variables
 def preparse():
     load_dotenv()
     vars = {}
     # Parsing the port
-    if not os.getenv('PORT') == "default":
-        vars['port'] = os.getenv('PORT')
-    print(os.getenv('PORT'))
-    return vars    
+    if not os.getenv("PORT") == "default":
+        vars["port"] = os.getenv("PORT")
+    print(os.getenv("PORT"))
+    return vars
+
 
 def main():
     global beaconCooldown
@@ -49,10 +53,10 @@ def main():
     print("[MAIN CYCLE] Starting watchdog...")
     was_connected = False
     cooldownHeader = False
-    while not ((os.getenv('FORCE_QUIT')=="True") or forceQuit):
+    while not ((os.getenv("FORCE_QUIT") == "True") or forceQuit):
         # This is just a way to check if we need to notify the gui
         are_connected = emesh.connected
-        if (are_connected!= was_connected):
+        if are_connected != was_connected:
             print("[GUI] Changed connection status")
             messageToShow = "CONNECTION ESTABLISHED"
             was_connected = are_connected
@@ -61,9 +65,9 @@ def main():
         # NOTE Overriding is always possible, otherwise we have to rely on gui.py
         if emesh.beaconingPrioritySettings:
             print("[MAIN CYCLE] Terminal mode: getting beaconing from .env...")
-            emesh.beaconOn = (os.getenv('BEACONING')=="True")
+            emesh.beaconOn = os.getenv("BEACONING") == "True"
         else:
-            print("[MAIN CYCLE] GUI mode: getting beaconing from GUI...")           
+            print("[MAIN CYCLE] GUI mode: getting beaconing from GUI...")
         print(f"[MAIN CYCLE] Beaconing: {emesh.beaconOn}")
         # NOTE As the scenarios can include long range radios, we have low bandwidth.
         # By waiting N seconds between beacons, we ensure that we are not beaconing
@@ -71,27 +75,28 @@ def main():
         if emesh.beaconOn:
             print("[MAIN CYCLE] Checking for beacon cooldown...")
             # The following keeps the code running while we cooldown beaconing too
-            if (beaconCooldown > 0):
+            if beaconCooldown > 0:
                 if not cooldownHeader:
                     print("+++ COOLDOWN ACTIVE +++")
                     cooldownHeader = True
-                isMultipleOfTen = (beaconCooldown % 10 == 0)
+                isMultipleOfTen = beaconCooldown % 10 == 0
                 if isMultipleOfTen:
                     print(f"[MAIN CYCLE] Beacon cooldown: {str(beaconCooldown)}")
                 beaconCooldown -= 1
             else:
                 print("*** COOLDOWN COMPLETE ***")
                 print("[MAIN CYCLE] Beaconing is activated, proceeding...")
-                beaconCooldown = int(os.getenv('BEACONING_INTERVAL'))
+                beaconCooldown = int(os.getenv("BEACONING_INTERVAL"))
                 emesh.beacon()
                 print("[MAIN CYCLE] Beacon emitted. Proceeding to the next cycle...")
         else:
             print("[MAIN CYCLE] Beaconing is not activated, proceeding...")
         # Sleep for N seconds
         # print("[MAIN CYCLE] Sleeping for " + os.getenv('SLEEP_INTERVAL') + " seconds")
-        time.sleep(int(os.getenv('SLEEP_INTERVAL')))
+        time.sleep(int(os.getenv("SLEEP_INTERVAL")))
         # print("[MAIN CYCLE] Sleeping complete. Proceeding to the next cycle...")
-        
+
+
 print("[SYSTEM] Ready to start.")
 
 
