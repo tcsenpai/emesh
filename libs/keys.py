@@ -17,7 +17,7 @@ publicRSAKey = None
 publicRSAPEM = None
 
 # INFO Common entry point to authentication
-def ensure():
+def ensure(savekeys=True):
     if(
         os.path.exists("private.key")
 	):
@@ -25,9 +25,9 @@ def ensure():
         load()
     else:
         print("[ED25519] Creating ed25519 private key...")
-        create()
+        create(savekeys)
 
-def create():
+def create(savekeys=True):
     global privateKey
     global privateBytes
     # ED25519 Creation
@@ -45,7 +45,8 @@ def create():
     # RSA Creation
     derive()
     # Writing file
-    save()
+    if savekeys:
+        save()
 
 def load(filepath="./"):
     global privateBytes

@@ -59,7 +59,6 @@ def main():
     print("[MAIN CYCLE] Starting watchdog...")
     was_connected = False
     cooldownHeader = False
-    loading.start("[ eMesh Main Cycle is Running ")
     while not ((os.getenv("FORCE_QUIT") == "True") or forceQuit):
         # This is just a way to check if we need to notify the gui
         are_connected = emesh.connected
@@ -104,7 +103,6 @@ def main():
         # print("[MAIN CYCLE] Sleeping complete. Proceeding to the next cycle...")
     print("[MAIN CYCLE] Exiting main cycle...")
     print("[SYSTEM] Exiting...")
-    loading.stop()
 
 print("[SYSTEM] Ready to start.")
 
