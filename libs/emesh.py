@@ -104,6 +104,7 @@ def connect(serialPort=None):
         print("[INITIALIZATION] Could not connect to radio")
         print("[INITIALIZATION] " + str(e))
         return False
+    return True
 
 def listSerials():
     # TODO
