@@ -4,7 +4,7 @@ from pubsub import pub
 import time
 # Helpers
 from hashlib import sha256
-import keys
+import libs.keys as keys
 import json
 
 serial_port = None
@@ -95,11 +95,15 @@ def connect(serialPort=None):
     keys.ensure()
     # Connecting to the radio
     serial_port = serialPort
-    pub.subscribe(onReceive, "meshtastic.receive")
-    pub.subscribe(onConnection, "meshtastic.connection.established")
-    interface = meshtastic.serial_interface.SerialInterface(serial_port)
-    print("[INITIALIZATION] Connection to radio established")
-
+    try:
+        pub.subscribe(onReceive, "meshtastic.receive")
+        pub.subscribe(onConnection, "meshtastic.connection.established")
+        interface = meshtastic.serial_interface.SerialInterface(serial_port)
+        print("[INITIALIZATION] Connection to radio established")
+    except Exception as e:
+        print("[INITIALIZATION] Could not connect to radio")
+        print("[INITIALIZATION] " + str(e))
+        return False
 
 def listSerials():
     # TODO

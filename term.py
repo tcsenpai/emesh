@@ -3,6 +3,7 @@ import builtins as __builtin__
 import time
 import os
 from dotenv import load_dotenv
+import libs.loading as loading
 
 # SECTION GUI Variables
 outputs = ""
@@ -28,7 +29,12 @@ def print(*args, **kwargs):
 def init():
     print("[SYSTEM] Starting EMesh...")
     vars = preparse()
-    emesh.connect(vars["port"])
+    loading.start("Initializing EMesh...")
+    if not emesh.connect(vars["port"]):
+        print("[SYSTEM] Could not connect to the device. Exiting...")
+        loading.stop()
+        exit()
+    loading.stop()
     print("[LOADER] Initialized")
 
 
@@ -53,6 +59,7 @@ def main():
     print("[MAIN CYCLE] Starting watchdog...")
     was_connected = False
     cooldownHeader = False
+    loading.start("[ eMesh Main Cycle is Running ")
     while not ((os.getenv("FORCE_QUIT") == "True") or forceQuit):
         # This is just a way to check if we need to notify the gui
         are_connected = emesh.connected
@@ -95,7 +102,9 @@ def main():
         # print("[MAIN CYCLE] Sleeping for " + os.getenv('SLEEP_INTERVAL') + " seconds")
         time.sleep(int(os.getenv("SLEEP_INTERVAL")))
         # print("[MAIN CYCLE] Sleeping complete. Proceeding to the next cycle...")
-
+    print("[MAIN CYCLE] Exiting main cycle...")
+    print("[SYSTEM] Exiting...")
+    loading.stop()
 
 print("[SYSTEM] Ready to start.")
 
