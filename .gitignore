@@ -1,3 +1,5 @@
 *.key
 *.pem
 textual
+.trunk
+__pycache__

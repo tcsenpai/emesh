@@ -15,8 +15,8 @@ Any device that is compatible with the current Meshtastic for Python version sho
 ### Features
 
 - [x] A fully functional GUI for Meshtastic even if you are using the terminal (thanks [Textualize for its Textual library](https://github.com/Textualize/textual))
+- [x] Conda support for both CLI and TUI versions
 - [x] Serial Port connection (serial or usb over serial)
-- [ ] Bluetooth connection (not yet, maybe not ever)
 - [x] Support for beaconing (emitting a signal every X seconds)
 	- [ ] Support for beaconing time customization
 - [x] Possibility of specifying the serial port to use
@@ -28,13 +28,38 @@ Any device that is compatible with the current Meshtastic for Python version sho
 
 	git clone https://github.com/thecookingsenpai/emesh
 	cd emesh
+
+#### TUI Version (textual GUI)
+
+***NOTE: This is the suggested way of running emesh on capable machines (from raspberry pi zero to infinite)***
+
+Using pip:
+
 	pip install -r requirements.txt
 	python gui.py
 
-You can also play with term.py and emesh.py and use directly
+Using conda (suggested):
+
+	conda env create --file environment.yaml
+	conda activate emesh-env
+	python gui.py
+
+
+#### CLI Version
+
+***NOTE: This is the suggested way of running emesh on low specs machines (sub-raspberry pi zero)***
+
+Using pip:
+
+	pip install -r requirements_cli.txt
 	python term.py
 
-If you really hate GUIs.
+Using conda (suggested):
+
+	conda env create --file environment_cli.yaml
+	conda activate emesh-env-cli
+	python term.py
+
 
 ### License
 

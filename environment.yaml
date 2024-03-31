@@ -1,0 +1,15 @@
+# run: conda env create --file environment.yml
+name: emesh-env
+dependencies:
+- python=3.10
+- anaconda
+- pip
+- pip:
+  - pytap2
+  - pubsub
+  - meshtastic
+  - cryptography
+  - deterministic-rsa-keygen
+  - python-dotenv
+  - textual
+  - textual-dev
